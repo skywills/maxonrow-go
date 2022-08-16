@@ -385,13 +385,15 @@ func (app *mxwApp) endBlocker(ctx sdkTypes.Context, req abci.RequestEndBlock) ab
 }
 
 func (app *mxwApp) anteHandler(ctx sdkTypes.Context, tx sdkTypes.Tx, simulate bool) (sdkTypes.Context, error) {
-	stdTx, ok := tx.(sdkAuth.StdTx)
+	_ , ok := tx.(sdkAuth.StdTx)
 	if !ok {
 		return ctx, sdkTypes.ErrInternal("Tx must be StdTx.")
 	}
+	/* remove kyc checking
 	if !app.kycKeeper.CheckTx(ctx, stdTx) {
 		return ctx, sdkTypes.NewError("mxw", 1000, "All signers must pass kyc.")
 	}
+	*/
 
 	return app.authAnteHandler(ctx, tx, simulate)
 }

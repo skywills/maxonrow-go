@@ -46,13 +46,13 @@ func handleMsgCreateMultiSigAccount(ctx sdkTypes.Context, msg MsgCreateMultiSigA
 		return sdkTypes.ErrInvalidAddress(fmt.Sprintf("Invalid account address: %s", msg.Owner)).Result()
 	}
 	addr := utils.DeriveMultiSigAddress(msg.Owner, OwnerAcc.GetSequence())
-
+/*
 	for _, signer := range msg.Signers {
 		if !kycKeeper.IsWhitelisted(ctx, signer) {
 			return sdkTypes.ErrUnknownRequest("Signer is not whitelisted.").Result()
 		}
 	}
-
+*/
 	acc := accountKeeper.NewAccountWithAddress(ctx, addr)
 	multisig := sdkAuthTypes.NewMultiSig(msg.Owner, msg.Threshold, msg.Signers)
 	acc.SetMultiSig(multisig)

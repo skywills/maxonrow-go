@@ -56,11 +56,11 @@ func CheckTxSig(ctx sdkTypes.Context, tx sdkAuth.StdTx, accountKeeper sdkAuth.Ac
 		return nil, sdkTypes.ErrInternal(fmt.Sprintf("MXW transactions accept only one signature per message. it has %v messages", len(signers)))
 	}
 	signer := signers[0]
-
+/*
 	if !kycKeeper.IsWhitelisted(ctx, signer) {
 		return nil, sdkTypes.ErrInternal(fmt.Sprintf("Message signer is not whitelisted: %s", signer))
 	}
-
+*/
 	signerAcc := GetAccount(ctx, accountKeeper, signer)
 	stdSigs := tx.Signatures
 	if len(stdSigs) == 0 {
@@ -121,11 +121,11 @@ func CheckTxSig(ctx sdkTypes.Context, tx sdkAuth.StdTx, accountKeeper sdkAuth.Ac
 				if !signerAcc.IsSigner(signedBy) {
 					return nil, sdkTypes.ErrUnauthorized("Unauthorized signer: %v")
 				}
-
+/*
 				if !kycKeeper.IsWhitelisted(ctx, signedBy) {
 					return nil, sdkTypes.ErrInternal(fmt.Sprintf("Transaction signer is not whitelisted: %v", signer))
 				}
-
+*/
 				//
 				pubKeys[i] = nil
 

@@ -152,11 +152,11 @@ func (app *mxwApp) validateMsg(ctx sdkTypes.Context, msg sdkTypes.Msg) sdkTypes.
 			}
 		}
 	case fungible.MsgTransferFungibleToken:
-
+/*
 		if !app.kycKeeper.IsWhitelisted(ctx, msg.To) {
 			return types.ErrReceiverNotKyc()
 		}
-
+*/
 		if !app.fungibleTokenKeeper.CheckApprovedToken(ctx, msg.Symbol) {
 			return types.ErrTokenInvalid()
 		}
@@ -182,11 +182,11 @@ func (app *mxwApp) validateMsg(ctx sdkTypes.Context, msg sdkTypes.Msg) sdkTypes.
 			return types.ErrTokenAccountFrozen()
 		}
 	case fungible.MsgMintFungibleToken:
-
+/*
 		if !app.kycKeeper.IsWhitelisted(ctx, msg.To) {
 			return types.ErrReceiverNotKyc()
 		}
-
+*/
 		if !app.fungibleTokenKeeper.CheckApprovedToken(ctx, msg.Symbol) {
 			return types.ErrTokenInvalid()
 		}
@@ -250,11 +250,11 @@ func (app *mxwApp) validateMsg(ctx sdkTypes.Context, msg sdkTypes.Msg) sdkTypes.
 		}
 
 	case fungible.MsgTransferFungibleTokenOwnership:
-
+/*
 		if !app.kycKeeper.IsWhitelisted(ctx, msg.To) {
 			return types.ErrReceiverNotKyc()
 		}
-
+*/
 		if app.fungibleTokenKeeper.IsTokenFrozen(ctx, msg.Symbol) {
 			return types.ErrTokenFrozen()
 		}
@@ -329,12 +329,13 @@ func (app *mxwApp) validateMsg(ctx sdkTypes.Context, msg sdkTypes.Msg) sdkTypes.
 			if app.nonFungibleTokenKeeper.CheckApprovedToken(ctx, msg.Payload.Token.Symbol) {
 				return types.ErrTokenAlreadyApproved(msg.Payload.Token.Symbol)
 			}
-
+/*
 			for _, v := range msg.Payload.Token.EndorserList {
 				if !app.kycKeeper.IsWhitelisted(ctx, v) {
 					return types.ErrTokenUnauthorisedEndorser()
 				}
 			}
+*/
 		}
 
 		if msg.Payload.Token.Status == nonFungible.RejectToken {
@@ -401,11 +402,11 @@ func (app *mxwApp) validateMsg(ctx sdkTypes.Context, msg sdkTypes.Msg) sdkTypes.
 		}
 
 	case nonFungible.MsgTransferNonFungibleItem:
-
+/*
 		if !app.kycKeeper.IsWhitelisted(ctx, msg.To) {
 			return types.ErrReceiverNotKyc()
 		}
-
+*/
 		if !app.nonFungibleTokenKeeper.CheckApprovedToken(ctx, msg.Symbol) {
 			return types.ErrTokenInvalid()
 		}
@@ -431,10 +432,11 @@ func (app *mxwApp) validateMsg(ctx sdkTypes.Context, msg sdkTypes.Msg) sdkTypes.
 		}
 
 	case nonFungible.MsgMintNonFungibleItem:
+/*		
 		if !app.kycKeeper.IsWhitelisted(ctx, msg.To) {
 			return types.ErrReceiverNotKyc()
 		}
-
+*/
 		if !app.nonFungibleTokenKeeper.CheckApprovedToken(ctx, msg.Symbol) {
 			return types.ErrTokenInvalid()
 		}
@@ -495,11 +497,11 @@ func (app *mxwApp) validateMsg(ctx sdkTypes.Context, msg sdkTypes.Msg) sdkTypes.
 		}
 
 	case nonFungible.MsgTransferNonFungibleTokenOwnership:
-
+/*
 		if !app.kycKeeper.IsWhitelisted(ctx, msg.To) {
 			return types.ErrReceiverNotKyc()
 		}
-
+*/
 		if app.nonFungibleTokenKeeper.IsTokenFrozen(ctx, msg.Symbol) {
 			return types.ErrTokenFrozen()
 		}
@@ -574,12 +576,13 @@ func (app *mxwApp) validateMsg(ctx sdkTypes.Context, msg sdkTypes.Msg) sdkTypes.
 		if !app.nonFungibleTokenKeeper.IsTokenOwner(ctx, msg.Symbol, msg.From) {
 			return types.ErrInvalidTokenOwner()
 		}
+/*		
 		for _, v := range msg.Endorsers {
 			if !app.kycKeeper.IsWhitelisted(ctx, v) {
 				return types.ErrTokenUnauthorisedEndorser()
 			}
 		}
-
+*/
 		var token = new(nonFungible.Token)
 		app.nonFungibleTokenKeeper.GetNonfungibleTokenDataInfo(ctx, msg.Symbol, token)
 		if sdkTypes.NewUint(uint64(len(msg.Endorsers))).GT(token.EndorserListLimit) {
@@ -602,11 +605,13 @@ func (app *mxwApp) validateMsg(ctx sdkTypes.Context, msg sdkTypes.Msg) sdkTypes.
 			return sdkTypes.ErrUnauthorized("Not authorised validator address.")
 		}
 	case auth.MsgCreateMultiSigAccount:
+		/*
 		for _, signer := range msg.Signers {
 			if !app.kycKeeper.IsWhitelisted(ctx, signer) {
 				return sdkTypes.ErrUnknownRequest("Signer is not whitelisted.")
 			}
 		}
+		*/
 	case auth.MsgCreateMultiSigTx:
 		groupAcc := utils.GetAccount(ctx, app.accountKeeper, msg.GroupAddress)
 		if groupAcc == nil {
